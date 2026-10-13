@@ -1,0 +1,280 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 400 650"
+     width="400" height="650">
+
+  <title>Lototi — Voiture vue de dessus</title>
+  <desc>Illustration automobile vectorielle avec carrosserie
+  galbée, vitrages, rétroviseurs et quatre sièges.</desc>
+
+  <defs>
+    <style>
+      .body {
+        fill: none;
+        stroke: #171717;
+        stroke-width: 3.5;
+        stroke-linejoin: round;
+        stroke-linecap: round;
+      }
+      .detail {
+        fill: none;
+        stroke: #292929;
+        stroke-width: 2;
+        stroke-linejoin: round;
+        stroke-linecap: round;
+      }
+      .glass {
+        fill: none;
+        stroke: #292929;
+        stroke-width: 2.5;
+        stroke-linejoin: round;
+      }
+      .seat {
+        fill: none;
+        stroke: #292929;
+        stroke-width: 2.4;
+        stroke-linejoin: round;
+        stroke-linecap: round;
+      }
+      .soft {
+        fill: none;
+        stroke: #777777;
+        stroke-width: 1.3;
+        stroke-linecap: round;
+      }
+    </style>
+  </defs>
+
+  <!-- Pneus et passages de roues -->
+  <g class="body">
+    <path d="M75 145 C61 145 57 155 57 173
+             L57 220 C57 231 64 237 75 237"/>
+    <path d="M325 145 C339 145 343 155 343 173
+             L343 220 C343 231 336 237 325 237"/>
+
+    <path d="M75 405 C64 405 57 411 57 423
+             L57 470 C57 488 61 498 75 498"/>
+    <path d="M325 405 C336 405 343 411 343 423
+             L343 470 C343 488 339 498 325 498"/>
+  </g>
+
+  <!-- Silhouette extérieure de la carrosserie -->
+  <path class="body" d="
+    M143 15
+    C119 17 100 29 89 48
+    C80 64 76 83 76 106
+    L76 165
+    C76 180 69 190 69 207
+    L69 235
+    C69 247 73 258 73 273
+    L73 380
+    C73 395 69 407 69 421
+    L69 447
+    C69 461 76 473 76 489
+    L76 545
+    C76 580 91 608 116 625
+    C131 635 151 639 175 639
+    L225 639
+    C249 639 269 635 284 625
+    C309 608 324 580 324 545
+    L324 489
+    C324 473 331 461 331 447
+    L331 421
+    C331 407 327 395 327 380
+    L327 273
+    C327 258 331 247 331 235
+    L331 207
+    C331 190 324 180 324 165
+    L324 106
+    C324 83 320 64 311 48
+    C300 29 281 17 257 15
+    C225 12 175 12 143 15 Z"/>
+
+  <!-- Rétroviseurs -->
+  <g class="body">
+    <path d="M76 183 Q65 178 55 182"/>
+    <path d="M324 183 Q335 178 345 182"/>
+
+    <path d="M55 182
+             C43 177 30 185 28 198
+             C26 210 31 221 42 224
+             C54 226 62 215 61 201
+             Q60 190 55 182 Z"/>
+
+    <path d="M345 182
+             C357 177 370 185 372 198
+             C374 210 369 221 358 224
+             C346 226 338 215 339 201
+             Q340 190 345 182 Z"/>
+  </g>
+
+  <!-- Capot avant -->
+  <path class="detail" d="
+    M105 56
+    C126 42 154 38 200 38
+    C246 38 274 42 295 56
+    C303 71 305 99 303 122
+    C300 143 291 159 276 173
+    Q200 186 124 173
+    C109 159 100 143 97 122
+    C95 99 97 71 105 56 Z"/>
+
+  <path class="soft" d="
+    M117 65
+    C140 53 166 50 200 50
+    C234 50 260 53 283 65"/>
+
+  <!-- Pare-brise avant -->
+  <path class="glass" d="
+    M111 183
+    C125 166 150 159 200 159
+    C250 159 275 166 289 183
+    L276 225
+    C270 239 252 247 200 247
+    C148 247 130 239 124 225 Z"/>
+
+  <path class="soft" d="M126 190 Q200 174 274 190"/>
+
+  <!-- Montants latéraux et contour du toit -->
+  <path class="detail" d="
+    M92 247 Q105 240 124 239
+    M308 247 Q295 240 276 239
+    M89 350 Q102 356 123 357
+    M311 350 Q298 356 277 357"/>
+
+  <!-- Siège avant gauche -->
+  <g id="seat-front-left" transform="translate(105 253)">
+    <path class="seat" d="
+      M13 2 Q7 3 5 12
+      L3 45 Q3 55 13 59
+      Q33 65 60 59
+      Q70 56 70 45
+      L68 12 Q66 3 60 2 Z"/>
+
+    <path class="seat" d="
+      M15 63 Q8 66 8 76
+      L8 105 Q8 114 18 117
+      Q36 121 55 117
+      Q65 114 65 105
+      L65 76 Q65 66 58 63 Z"/>
+
+    <path class="soft" d="M13 76 Q36 82 60 76"/>
+    <path class="soft" d="M15 15 Q36 20 58 15"/>
+    <rect class="detail" x="23" y="6"
+          width="30" height="17" rx="7"/>
+  </g>
+
+  <!-- Siège avant droit -->
+  <g id="seat-front-right" transform="translate(225 253)">
+    <path class="seat" d="
+      M13 2 Q7 3 5 12
+      L3 45 Q3 55 13 59
+      Q33 65 60 59
+      Q70 56 70 45
+      L68 12 Q66 3 60 2 Z"/>
+
+    <path class="seat" d="
+      M15 63 Q8 66 8 76
+      L8 105 Q8 114 18 117
+      Q36 121 55 117
+      Q65 114 65 105
+      L65 76 Q65 66 58 63 Z"/>
+
+    <path class="soft" d="M13 76 Q36 82 60 76"/>
+    <path class="soft" d="M15 15 Q36 20 58 15"/>
+    <rect class="detail" x="23" y="6"
+          width="30" height="17" rx="7"/>
+  </g>
+
+  <!-- Console centrale -->
+  <path class="detail" d="
+    M190 252 Q200 247 210 252
+    L210 358 Q200 364 190 358 Z"/>
+
+  <circle class="detail" cx="200" cy="273" r="4"/>
+  <path class="soft" d="M196 292 L204 292"/>
+  <path class="soft" d="M196 303 L204 303"/>
+  <path class="detail" d="M193 326 Q200 321 207 326"/>
+
+  <!-- Dossier de la banquette arrière -->
+  <path class="seat" d="
+    M105 382
+    Q105 372 117 370
+    Q200 359 283 370
+    Q295 372 295 382
+    L295 425
+    Q295 437 283 440
+    Q200 451 117 440
+    Q105 437 105 425 Z"/>
+
+  <!-- Trois appuie-têtes arrière -->
+  <g class="detail">
+    <path d="M125 381 Q125 373 133 372
+             L151 372 Q159 373 159 381
+             L159 390 Q142 394 125 390 Z"/>
+
+    <path d="M181 377 Q181 369 189 368
+             L211 368 Q219 369 219 377
+             L219 387 Q200 390 181 387 Z"/>
+
+    <path d="M241 381 Q241 373 249 372
+             L267 372 Q275 373 275 381
+             L275 390 Q258 394 241 390 Z"/>
+  </g>
+
+  <!-- Assise de la banquette arrière -->
+  <path class="seat" d="
+    M111 444
+    Q111 436 122 435
+    Q200 447 278 435
+    Q289 436 289 444
+    L289 471
+    Q289 482 278 484
+    Q200 495 122 484
+    Q111 482 111 471 Z"/>
+
+  <path class="soft" d="M121 455 Q200 466 279 455"/>
+
+  <!-- Lunette arrière -->
+  <path class="glass" d="
+    M124 500
+    Q200 486 276 500
+    L290 538
+    Q285 557 268 566
+    Q200 582 132 566
+    Q115 557 110 538 Z"/>
+
+  <path class="soft" d="M119 533 Q200 550 281 533"/>
+
+  <!-- Coffre arrière -->
+  <path class="detail" d="
+    M96 571
+    Q119 589 145 594
+    Q200 604 255 594
+    Q281 589 304 571"/>
+
+  <!-- Feux arrière -->
+  <path class="detail" d="
+    M86 570 Q100 568 114 576
+    L110 589 Q96 588 86 580 Z"/>
+
+  <path class="detail" d="
+    M314 570 Q300 568 286 576
+    L290 589 Q304 588 314 580 Z"/>
+
+  <!-- Poignées de portes -->
+  <g class="detail">
+    <path d="M79 284 Q88 280 96 284"/>
+    <path d="M79 329 Q88 333 96 329"/>
+    <path d="M304 284 Q312 280 321 284"/>
+    <path d="M304 329 Q312 333 321 329"/>
+  </g>
+
+  <!-- Lignes latérales de carrosserie -->
+  <g class="soft">
+    <path d="M84 250 L84 375"/>
+    <path d="M316 250 L316 375"/>
+    <path d="M84 447 L84 530"/>
+    <path d="M316 447 L316 530"/>
+  </g>
+
+</svg>
