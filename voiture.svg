@@ -1,280 +1,372 @@
-<svg xmlns="http://www.w3.org/2000/svg"
-     viewBox="0 0 400 650"
-     width="400" height="650">
+XML
 
-  <title>Lototi — Voiture vue de dessus</title>
-  <desc>Illustration automobile vectorielle avec carrosserie
-  galbée, vitrages, rétroviseurs et quatre sièges.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 620" role="img" aria-labelledby="title desc">
+  <title id="title">Lototi — modèle vectoriel interactif d'une voiture</title>
+  <desc id="desc">Vue de dessus avec sièges, carrosserie, vitres, portes, volant et console séparés.</desc>
 
   <defs>
+    <linearGradient id="bodyPaint" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e7eaed"/>
+      <stop offset=".45" stop-color="#aab2ba"/>
+      <stop offset="1" stop-color="#707982"/>
+    </linearGradient>
+    <linearGradient id="glassPaint" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#314b5c"/>
+      <stop offset="1" stop-color="#172631"/>
+    </linearGradient>
     <style>
-      .body {
-        fill: none;
-        stroke: #171717;
-        stroke-width: 3.5;
+      .zone {
+        cursor: pointer;
+        transition: fill .18s ease, opacity .18s ease;
+      }
+      .zone:focus {
+        outline: none;
+        stroke: #ffd166;
+        stroke-width: 4;
+      }
+      .surface {
+        fill: var(--zone-color, #30363b);
+        stroke: #111519;
+        stroke-width: 2;
         stroke-linejoin: round;
+      }
+      .outline {
+        fill: none;
+        stroke: #242a2f;
+        stroke-width: 2.4;
         stroke-linecap: round;
+        stroke-linejoin: round;
+        pointer-events: none;
+      }
+      .seam {
+        fill: none;
+        stroke: #aab1b6;
+        stroke-width: 1.3;
+        stroke-linecap: round;
+        opacity: .72;
+        pointer-events: none;
       }
       .detail {
         fill: none;
-        stroke: #292929;
+        stroke: #424a50;
         stroke-width: 2;
-        stroke-linejoin: round;
         stroke-linecap: round;
-      }
-      .glass {
-        fill: none;
-        stroke: #292929;
-        stroke-width: 2.5;
         stroke-linejoin: round;
+        pointer-events: none;
       }
-      .seat {
-        fill: none;
-        stroke: #292929;
-        stroke-width: 2.4;
-        stroke-linejoin: round;
-        stroke-linecap: round;
+      .window {
+        fill: var(--zone-color, url(#glassPaint));
+        stroke: #303b43;
+        stroke-width: 2;
       }
-      .soft {
+      .highlight {
         fill: none;
-        stroke: #777777;
-        stroke-width: 1.3;
-        stroke-linecap: round;
+        stroke: #f4f6f7;
+        stroke-width: 1.5;
+        opacity: .45;
+        pointer-events: none;
+      }
+      .tire {
+        fill: #15191c;
+        stroke: #525a60;
+        stroke-width: 2;
+      }
+      .wheel-rim {
+        fill: #717a82;
+        stroke: #20262b;
+        stroke-width: 2;
+      }
+      .wheel-center {
+        fill: #252c32;
+        stroke: #aeb5ba;
+        stroke-width: 1.4;
+      }
+      .lamp {
+        fill: #f6e8c8;
+        stroke: #6d7378;
+        stroke-width: 1.5;
+      }
+      .rear-lamp {
+        fill: #a33b40;
+        stroke: #57252a;
+        stroke-width: 1.5;
       }
     </style>
   </defs>
 
-  <!-- Pneus et passages de roues -->
-  <g class="body">
-    <path d="M75 145 C61 145 57 155 57 173
-             L57 220 C57 231 64 237 75 237"/>
-    <path d="M325 145 C339 145 343 155 343 173
-             L343 220 C343 231 336 237 325 237"/>
-
-    <path d="M75 405 C64 405 57 411 57 423
-             L57 470 C57 488 61 498 75 498"/>
-    <path d="M325 405 C336 405 343 411 343 423
-             L343 470 C343 488 339 498 325 498"/>
+  <!-- CARROSSERIE : surface indépendante -->
+  <g id="zone-body" class="zone" data-zone="body" data-label="Carrosserie"
+     tabindex="0" role="button" aria-label="Carrosserie">
+    <path class="surface" style="--zone-color:url(#bodyPaint)"
+      d="M145 20
+         Q200 4 255 20
+         Q282 29 295 65
+         L320 131
+         Q331 159 331 197
+         L331 431
+         Q331 468 319 504
+         L294 565
+         Q281 598 255 605
+         Q200 619 145 605
+         Q119 598 106 565
+         L81 504
+         Q69 468 69 431
+         L69 197
+         Q69 159 80 131
+         L105 65
+         Q118 29 145 20 Z"/>
   </g>
 
-  <!-- Silhouette extérieure de la carrosserie -->
-  <path class="body" d="
-    M143 15
-    C119 17 100 29 89 48
-    C80 64 76 83 76 106
-    L76 165
-    C76 180 69 190 69 207
-    L69 235
-    C69 247 73 258 73 273
-    L73 380
-    C73 395 69 407 69 421
-    L69 447
-    C69 461 76 473 76 489
-    L76 545
-    C76 580 91 608 116 625
-    C131 635 151 639 175 639
-    L225 639
-    C249 639 269 635 284 625
-    C309 608 324 580 324 545
-    L324 489
-    C324 473 331 461 331 447
-    L331 421
-    C331 407 327 395 327 380
-    L327 273
-    C327 258 331 247 331 235
-    L331 207
-    C331 190 324 180 324 165
-    L324 106
-    C324 83 320 64 311 48
-    C300 29 281 17 257 15
-    C225 12 175 12 143 15 Z"/>
-
-  <!-- Rétroviseurs -->
-  <g class="body">
-    <path d="M76 183 Q65 178 55 182"/>
-    <path d="M324 183 Q335 178 345 182"/>
-
-    <path d="M55 182
-             C43 177 30 185 28 198
-             C26 210 31 221 42 224
-             C54 226 62 215 61 201
-             Q60 190 55 182 Z"/>
-
-    <path d="M345 182
-             C357 177 370 185 372 198
-             C374 210 369 221 358 224
-             C346 226 338 215 339 201
-             Q340 190 345 182 Z"/>
+  <!-- PNEUS ET JANTES -->
+  <g id="zone-wheels" class="zone" data-zone="wheels" data-label="Roues"
+     tabindex="0" role="button" aria-label="Roues">
+    <g id="wheel-front-left" transform="translate(57 151)">
+      <rect class="tire" x="0" y="0" width="28" height="76" rx="9"/>
+      <rect class="wheel-rim" x="5" y="10" width="18" height="56" rx="6"/>
+      <path class="detail" d="M14 17 V59 M8 38 H20"/>
+    </g>
+    <g id="wheel-front-right" transform="translate(315 151)">
+      <rect class="tire" x="0" y="0" width="28" height="76" rx="9"/>
+      <rect class="wheel-rim" x="5" y="10" width="18" height="56" rx="6"/>
+      <path class="detail" d="M14 17 V59 M8 38 H20"/>
+    </g>
+    <g id="wheel-rear-left" transform="translate(57 406)">
+      <rect class="tire" x="0" y="0" width="28" height="76" rx="9"/>
+      <rect class="wheel-rim" x="5" y="10" width="18" height="56" rx="6"/>
+      <path class="detail" d="M14 17 V59 M8 38 H20"/>
+    </g>
+    <g id="wheel-rear-right" transform="translate(315 406)">
+      <rect class="tire" x="0" y="0" width="28" height="76" rx="9"/>
+      <rect class="wheel-rim" x="5" y="10" width="18" height="56" rx="6"/>
+      <path class="detail" d="M14 17 V59 M8 38 H20"/>
+    </g>
   </g>
 
-  <!-- Capot avant -->
-  <path class="detail" d="
-    M105 56
-    C126 42 154 38 200 38
-    C246 38 274 42 295 56
-    C303 71 305 99 303 122
-    C300 143 291 159 276 173
-    Q200 186 124 173
-    C109 159 100 143 97 122
-    C95 99 97 71 105 56 Z"/>
-
-  <path class="soft" d="
-    M117 65
-    C140 53 166 50 200 50
-    C234 50 260 53 283 65"/>
-
-  <!-- Pare-brise avant -->
-  <path class="glass" d="
-    M111 183
-    C125 166 150 159 200 159
-    C250 159 275 166 289 183
-    L276 225
-    C270 239 252 247 200 247
-    C148 247 130 239 124 225 Z"/>
-
-  <path class="soft" d="M126 190 Q200 174 274 190"/>
-
-  <!-- Montants latéraux et contour du toit -->
-  <path class="detail" d="
-    M92 247 Q105 240 124 239
-    M308 247 Q295 240 276 239
-    M89 350 Q102 356 123 357
-    M311 350 Q298 356 277 357"/>
-
-  <!-- Siège avant gauche -->
-  <g id="seat-front-left" transform="translate(105 253)">
-    <path class="seat" d="
-      M13 2 Q7 3 5 12
-      L3 45 Q3 55 13 59
-      Q33 65 60 59
-      Q70 56 70 45
-      L68 12 Q66 3 60 2 Z"/>
-
-    <path class="seat" d="
-      M15 63 Q8 66 8 76
-      L8 105 Q8 114 18 117
-      Q36 121 55 117
-      Q65 114 65 105
-      L65 76 Q65 66 58 63 Z"/>
-
-    <path class="soft" d="M13 76 Q36 82 60 76"/>
-    <path class="soft" d="M15 15 Q36 20 58 15"/>
-    <rect class="detail" x="23" y="6"
-          width="30" height="17" rx="7"/>
+  <!-- VITRE AVANT -->
+  <g id="zone-windshield" class="zone" data-zone="windshield" data-label="Pare-brise"
+     tabindex="0" role="button" aria-label="Pare-brise">
+    <path class="window"
+      d="M124 58 Q200 30 276 58
+         L300 125 Q301 136 287 139
+         L113 139 Q99 136 100 125 Z"/>
+    <path class="highlight" d="M123 65 Q200 42 277 65"/>
   </g>
 
-  <!-- Siège avant droit -->
-  <g id="seat-front-right" transform="translate(225 253)">
-    <path class="seat" d="
-      M13 2 Q7 3 5 12
-      L3 45 Q3 55 13 59
-      Q33 65 60 59
-      Q70 56 70 45
-      L68 12 Q66 3 60 2 Z"/>
-
-    <path class="seat" d="
-      M15 63 Q8 66 8 76
-      L8 105 Q8 114 18 117
-      Q36 121 55 117
-      Q65 114 65 105
-      L65 76 Q65 66 58 63 Z"/>
-
-    <path class="soft" d="M13 76 Q36 82 60 76"/>
-    <path class="soft" d="M15 15 Q36 20 58 15"/>
-    <rect class="detail" x="23" y="6"
-          width="30" height="17" rx="7"/>
+  <!-- TABLEAU DE BORD -->
+  <g id="zone-dashboard" class="zone" data-zone="dashboard" data-label="Tableau de bord"
+     tabindex="0" role="button" aria-label="Tableau de bord">
+    <path class="surface"
+      d="M95 143 Q200 130 305 143
+         L311 169 Q200 181 89 169 Z"
+      style="--zone-color:#343b41"/>
+    <path class="outline" d="M95 143 Q200 130 305 143"/>
+    <rect x="170" y="145" width="60" height="15" rx="4"
+      fill="#161d22" stroke="#6e7981" stroke-width="1.5"/>
+    <circle cx="111" cy="155" r="5" fill="#1a2025" stroke="#7e888f"/>
+    <circle cx="289" cy="155" r="5" fill="#1a2025" stroke="#7e888f"/>
   </g>
 
-  <!-- Console centrale -->
-  <path class="detail" d="
-    M190 252 Q200 247 210 252
-    L210 358 Q200 364 190 358 Z"/>
-
-  <circle class="detail" cx="200" cy="273" r="4"/>
-  <path class="soft" d="M196 292 L204 292"/>
-  <path class="soft" d="M196 303 L204 303"/>
-  <path class="detail" d="M193 326 Q200 321 207 326"/>
-
-  <!-- Dossier de la banquette arrière -->
-  <path class="seat" d="
-    M105 382
-    Q105 372 117 370
-    Q200 359 283 370
-    Q295 372 295 382
-    L295 425
-    Q295 437 283 440
-    Q200 451 117 440
-    Q105 437 105 425 Z"/>
-
-  <!-- Trois appuie-têtes arrière -->
-  <g class="detail">
-    <path d="M125 381 Q125 373 133 372
-             L151 372 Q159 373 159 381
-             L159 390 Q142 394 125 390 Z"/>
-
-    <path d="M181 377 Q181 369 189 368
-             L211 368 Q219 369 219 377
-             L219 387 Q200 390 181 387 Z"/>
-
-    <path d="M241 381 Q241 373 249 372
-             L267 372 Q275 373 275 381
-             L275 390 Q258 394 241 390 Z"/>
+  <!-- VOLANT -->
+  <g id="zone-steering" class="zone" data-zone="steering" data-label="Volant"
+     tabindex="0" role="button" aria-label="Volant">
+    <circle cx="128" cy="181" r="20" fill="none"
+      stroke="var(--zone-color, #151a1e)" stroke-width="7"/>
+    <circle cx="128" cy="181" r="7" fill="var(--zone-color, #151a1e)"
+      stroke="#8e979e" stroke-width="1.3"/>
+    <path d="M128 174 V164 M122 184 L113 193 M134 184 L143 193"
+      fill="none" stroke="#8e979e" stroke-width="2"/>
   </g>
 
-  <!-- Assise de la banquette arrière -->
-  <path class="seat" d="
-    M111 444
-    Q111 436 122 435
-    Q200 447 278 435
-    Q289 436 289 444
-    L289 471
-    Q289 482 278 484
-    Q200 495 122 484
-    Q111 482 111 471 Z"/>
-
-  <path class="soft" d="M121 455 Q200 466 279 455"/>
-
-  <!-- Lunette arrière -->
-  <path class="glass" d="
-    M124 500
-    Q200 486 276 500
-    L290 538
-    Q285 557 268 566
-    Q200 582 132 566
-    Q115 557 110 538 Z"/>
-
-  <path class="soft" d="M119 533 Q200 550 281 533"/>
-
-  <!-- Coffre arrière -->
-  <path class="detail" d="
-    M96 571
-    Q119 589 145 594
-    Q200 604 255 594
-    Q281 589 304 571"/>
-
-  <!-- Feux arrière -->
-  <path class="detail" d="
-    M86 570 Q100 568 114 576
-    L110 589 Q96 588 86 580 Z"/>
-
-  <path class="detail" d="
-    M314 570 Q300 568 286 576
-    L290 589 Q304 588 314 580 Z"/>
-
-  <!-- Poignées de portes -->
-  <g class="detail">
-    <path d="M79 284 Q88 280 96 284"/>
-    <path d="M79 329 Q88 333 96 329"/>
-    <path d="M304 284 Q312 280 321 284"/>
-    <path d="M304 329 Q312 333 321 329"/>
+  <!-- SIÈGE AVANT GAUCHE : CONDUCTEUR -->
+  <g id="seat-front-left" class="zone" data-zone="seat-front-left"
+     data-label="Siège conducteur" tabindex="0" role="button"
+     aria-label="Siège conducteur">
+    <path class="surface"
+      d="M153 178 Q153 170 163 170
+         L190 170 Q200 171 200 182
+         L200 233 Q199 245 188 248
+         L164 248 Q153 245 153 233 Z"/>
+    <path class="surface"
+      d="M151 245 Q151 237 161 237
+         L192 237 Q203 238 203 249
+         L205 282 Q204 293 193 295
+         L161 295 Q150 293 150 282 Z"/>
+    <path class="seam" d="M161 183 Q176 178 191 183 M161 251 Q176 247 193 251"/>
+    <path class="seam" d="M176 188 V230 M176 256 V281"/>
+    <path class="outline" d="M153 233 Q176 240 200 233 M150 282 Q177 289 205 282"/>
   </g>
 
-  <!-- Lignes latérales de carrosserie -->
-  <g class="soft">
-    <path d="M84 250 L84 375"/>
-    <path d="M316 250 L316 375"/>
-    <path d="M84 447 L84 530"/>
-    <path d="M316 447 L316 530"/>
+  <!-- SIÈGE AVANT DROIT : PASSAGER -->
+  <g id="seat-front-right" class="zone" data-zone="seat-front-right"
+     data-label="Siège passager avant" tabindex="0" role="button"
+     aria-label="Siège passager avant">
+    <path class="surface"
+      d="M200 182 Q200 171 210 170
+         L237 170 Q247 170 247 178
+         L247 233 Q247 245 236 248
+         L212 248 Q201 245 200 233 Z"/>
+    <path class="surface"
+      d="M197 249 Q197 238 208 237
+         L239 237 Q249 237 249 245
+         L250 282 Q250 293 239 295
+         L207 295 Q196 293 195 282 Z"/>
+    <path class="seam" d="M209 183 Q224 178 239 183 M207 251 Q224 247 241 251"/>
+    <path class="seam" d="M224 188 V230 M223 256 V281"/>
+    <path class="outline" d="M200 233 Q224 240 247 233 M195 282 Q223 289 250 282"/>
   </g>
 
+  <!-- CONSOLE CENTRALE -->
+  <g id="zone-console" class="zone" data-zone="console" data-label="Console centrale"
+     tabindex="0" role="button" aria-label="Console centrale">
+    <path class="surface"
+      d="M183 174 L217 174 L219 219 L215 236
+         L185 236 L181 219 Z"
+      style="--zone-color:#252b30"/>
+    <rect x="188" y="182" width="24" height="13" rx="3"
+      fill="#151a1e" stroke="#818a91" stroke-width="1.2"/>
+    <path d="M193 205 L207 205 M193 211 L207 211"
+      stroke="#8c969d" stroke-width="1.6" stroke-linecap="round"/>
+    <rect x="190" y="218" width="20" height="10" rx="3"
+      fill="#171c20" stroke="#626c73" stroke-width="1.2"/>
+  </g>
+
+  <!-- VITRES LATÉRALES -->
+  <g id="zone-side-windows" class="zone" data-zone="side-windows" data-label="Vitres latérales"
+     tabindex="0" role="button" aria-label="Vitres latérales">
+    <path class="window"
+      d="M91 184 L105 179 L105 276 L91 269 Z"/>
+    <path class="window"
+      d="M309 184 L295 179 L295 276 L309 269 Z"/>
+    <path class="window"
+      d="M91 306 L105 301 L105 393 L91 387 Z"/>
+    <path class="window"
+      d="M309 306 L295 301 L295 393 L309 387 Z"/>
+  </g>
+
+  <!-- PORTES GAUCHE ET DROITE -->
+  <g id="zone-door-left" class="zone" data-zone="door-left" data-label="Porte gauche"
+     tabindex="0" role="button" aria-label="Porte gauche">
+    <path class="surface"
+      d="M79 182 L91 178 L91 270 L79 263 Z"
+      style="--zone-color:#7f8992"/>
+    <path class="outline" d="M81 190 L87 187 M81 253 L87 257"/>
+  </g>
+  <g id="zone-door-right" class="zone" data-zone="door-right" data-label="Porte droite"
+     tabindex="0" role="button" aria-label="Porte droite">
+    <path class="surface"
+      d="M321 182 L309 178 L309 270 L321 263 Z"
+      style="--zone-color:#7f8992"/>
+    <path class="outline" d="M319 190 L313 187 M319 253 L313 257"/>
+  </g>
+
+  <!-- BANQUETTE ARRIÈRE GAUCHE -->
+  <g id="seat-rear-left" class="zone" data-zone="seat-rear-left"
+     data-label="Siège arrière gauche" tabindex="0" role="button"
+     aria-label="Siège arrière gauche">
+    <path class="surface"
+      d="M113 326 Q113 318 122 318 L157 318
+         Q166 319 166 328 L166 362
+         Q165 372 156 374 L123 374
+         Q113 372 113 362 Z"/>
+    <path class="surface"
+      d="M111 377 Q111 369 121 369 L157 369
+         Q167 370 167 380 L167 404
+         Q166 413 156 414 L122 414
+         Q112 413 112 404 Z"/>
+    <path class="seam" d="M122 332 Q139 328 157 332 M121 383 Q139 379 157 383"/>
+    <path class="seam" d="M139 337 V360 M139 389 V402"/>
+  </g>
+
+  <!-- BANQUETTE ARRIÈRE CENTRALE -->
+  <g id="seat-rear-center" class="zone" data-zone="seat-rear-center"
+     data-label="Siège arrière central" tabindex="0" role="button"
+     aria-label="Siège arrière central">
+    <path class="surface"
+      d="M167 328 Q167 319 176 318 L224 318
+         Q233 319 233 328 L233 362
+         Q232 372 223 374 L177 374
+         Q168 372 167 362 Z"/>
+    <path class="surface"
+      d="M167 380 Q167 370 177 369 L223 369
+         Q233 370 233 380 L233 404
+         Q232 413 222 414 L178 414
+         Q168 413 167 404 Z"/>
+    <path class="seam" d="M177 332 Q200 328 223 332 M178 383 Q200 379 222 383"/>
+    <path class="seam" d="M200 337 V360 M200 389 V402"/>
+  </g>
+
+  <!-- BANQUETTE ARRIÈRE DROITE -->
+  <g id="seat-rear-right" class="zone" data-zone="seat-rear-right"
+     data-label="Siège arrière droit" tabindex="0" role="button"
+     aria-label="Siège arrière droit">
+    <path class="surface"
+      d="M234 328 Q234 319 243 318 L278 318
+         Q287 318 287 326 L287 362
+         Q286 372 277 374 L244 374
+         Q234 372 234 362 Z"/>
+    <path class="surface"
+      d="M233 380 Q233 370 243 369 L279 369
+         Q289 369 289 377 L288 404
+         Q288 413 278 414 L244 414
+         Q234 413 233 404 Z"/>
+    <path class="seam" d="M244 332 Q261 328 278 332 M244 383 Q261 379 278 383"/>
+    <path class="seam" d="M261 337 V360 M261 389 V402"/>
+  </g>
+
+  <!-- VITRE ARRIÈRE -->
+  <g id="zone-rear-window" class="zone" data-zone="rear-window" data-label="Lunette arrière"
+     tabindex="0" role="button" aria-label="Lunette arrière">
+    <path class="window"
+      d="M111 451 Q200 470 289 451
+         L273 526 Q200 550 127 526 Z"/>
+    <path class="highlight" d="M124 463 Q200 480 276 463"/>
+  </g>
+
+  <!-- COFFRE -->
+  <g id="zone-trunk" class="zone" data-zone="trunk" data-label="Coffre"
+     tabindex="0" role="button" aria-label="Coffre">
+    <path class="surface"
+      d="M104 535 Q200 558 296 535
+         L279 573 Q265 594 246 596
+         Q200 605 154 596
+         Q135 594 121 573 Z"
+      style="--zone-color:#aab2ba"/>
+    <path class="outline" d="M121 573 Q200 591 279 573"/>
+  </g>
+
+  <!-- PARE-CHOCS ET ÉCLAIRAGES -->
+  <g id="zone-lights" class="zone" data-zone="lights" data-label="Éclairages"
+     tabindex="0" role="button" aria-label="Éclairages">
+    <path class="lamp" d="M111 43 Q130 29 150 27 L143 41 L119 50 Z"/>
+    <path class="lamp" d="M289 43 Q270 29 250 27 L257 41 L281 50 Z"/>
+    <path class="rear-lamp" d="M105 548 L123 557 L128 570 L115 563 Z"/>
+    <path class="rear-lamp" d="M295 548 L277 557 L272 570 L285 563 Z"/>
+  </g>
+
+  <!-- RÉTROVISEURS -->
+  <g id="zone-mirrors" class="zone" data-zone="mirrors" data-label="Rétroviseurs"
+     tabindex="0" role="button" aria-label="Rétroviseurs">
+    <path class="surface"
+      d="M72 115 Q52 106 46 121 L49 145 Q55 152 70 143 Z"
+      style="--zone-color:#68737c"/>
+    <path class="surface"
+      d="M328 115 Q348 106 354 121 L351 145 Q345 152 330 143 Z"
+      style="--zone-color:#68737c"/>
+  </g>
+
+  <!-- CONTOURS GÉNÉRAUX ET LIGNES DE PORTES -->
+  <g id="fixed-details" aria-hidden="true">
+    <path class="outline"
+      d="M105 65 Q200 39 295 65
+         M80 131 Q200 149 320 131
+         M89 300 Q200 315 311 300
+         M89 422 Q200 435 311 422
+         M81 504 Q200 528 319 504"/>
+    <path class="highlight"
+      d="M112 75 Q200 53 288 75
+         M101 485 Q200 506 299 485"/>
+    <path class="detail" d="M91 288 L105 282 M309 288 L295 282"/>
+    <path class="detail" d="M91 411 L105 405 M309 411 L295 405"/>
+    <path class="outline" d="M144 20 Q200 8 256 20"/>
+  </g>
 </svg>
