@@ -1,539 +1,967 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0b0b0d">
-  <meta name="description" content="Lototi — interface automobile moderne.">
-  <title>Lototi</title>
-
+  <meta name="theme-color" content="#0b0d10">
+  <meta name="description" content="Lototi — personnalisation interactive des zones d'une voiture.">
+  <title>Lototi — Studio automobile</title>
   <link rel="manifest" href="./manifest.json">
-  <link rel="icon" href="./icon.png" type="image/png">
-  <link rel="apple-touch-icon" href="./icon.png">
-
   <style>
     :root {
       color-scheme: dark;
-      --bg: #0b0b0d;
-      --panel: #141417;
-      --border: #29292f;
-      --text: #f5f5f7;
-      --muted: #92929e;
-      --accent: #ff8a24;
+      --bg: #0b0d10;
+      --panel: #14181d;
+      --panel-2: #1b2026;
+      --border: #2b323a;
+      --text: #f2f4f7;
+      --muted: #929ca7;
+      --accent: #f5a623;
+      --radius: 18px;
     }
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; }
+
+    html { min-height: 100%; background: var(--bg); }
 
     body {
       margin: 0;
-      min-height: 100vh;
-      min-height: 100dvh;
       background:
-        radial-gradient(ellipse at 50% 20%, #202027 0%, transparent 48%),
+        radial-gradient(ellipse at 50% 0%, #1b222a 0%, transparent 46%),
         var(--bg);
       color: var(--text);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont,
-                   "Segoe UI", sans-serif;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+      padding: 0 0 calc(24px + env(safe-area-inset-bottom));
     }
+
+    button, input, select { font: inherit; }
 
     button {
-      font: inherit;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      min-height: 44px;
+      padding: 10px 13px;
+      color: var(--text);
+      background: var(--panel-2);
       cursor: pointer;
+      transition: background .18s, border-color .18s, transform .12s;
     }
 
-    .app {
-      width: 100%;
-      max-width: 520px;
-      min-height: 100vh;
-      min-height: 100dvh;
-      margin: 0 auto;
-      padding:
-        max(20px, env(safe-area-inset-top))
-        20px
-        max(20px, env(safe-area-inset-bottom));
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
+    button:active { transform: scale(.98); }
+
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
 
-    .topbar,
-    .brand,
-    .status,
-    .controls,
-    .footer {
-      display: flex;
-      align-items: center;
-    }
-
-    .topbar,
-    .footer {
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .brand {
-      gap: 11px;
-    }
-
-    .brand-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      object-fit: cover;
-    }
-
-    .brand-name {
-      margin: 0;
-      font-size: 21px;
+    button.primary {
+      color: #17130b;
+      background: var(--accent);
+      border-color: var(--accent);
       font-weight: 800;
     }
 
-    .brand-subtitle {
-      margin: 3px 0 0;
+    button.ghost { background: transparent; }
+    button.danger { color: #ff9b9b; }
+
+    .app {
+      width: min(100% - 24px, 1040px);
+      margin: auto;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 23px 0 17px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+    }
+
+    .logo {
+      width: 43px;
+      height: 43px;
+      flex: 0 0 43px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      color: #18130a;
+      background: var(--accent);
+      font-size: 22px;
+      font-weight: 950;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -.6px;
+    }
+
+    .subtitle {
+      margin-top: 3px;
+      font-size: 12px;
       color: var(--muted);
-      font-size: 11px;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
     }
 
     .status {
+      display: inline-flex;
+      align-items: center;
       gap: 7px;
-      padding: 9px 11px;
-      border: 1px solid var(--border);
-      border-radius: 30px;
       color: var(--muted);
       font-size: 11px;
+      white-space: nowrap;
     }
 
     .status-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: #60c995;
+      background: #e8a43a;
     }
 
-    .intro .eyebrow {
-      margin: 0 0 10px;
-      color: var(--accent);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
+      align-items: start;
+      gap: 16px;
     }
 
-    h1 {
-      margin: 0;
-      font-size: clamp(30px, 8vw, 39px);
-      line-height: 1.1;
-      letter-spacing: -1.7px;
-    }
-
-    .intro-description {
-      margin: 12px 0 0;
-      max-width: 340px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.65;
-    }
-
-    .vehicle-card {
-      position: relative;
-      min-height: 390px;
-      flex: 1 0 auto;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px 14px;
+    .panel {
+      min-width: 0;
       border: 1px solid var(--border);
-      border-radius: 22px;
-      background:
-        radial-gradient(ellipse at 50% 48%, #25252d 0%, transparent 63%),
-        linear-gradient(145deg, #19191e, #101013);
+      border-radius: var(--radius);
+      background: rgba(20, 24, 29, .94);
+      overflow: hidden;
     }
 
-    .vehicle-label {
-      position: absolute;
-      top: 27px;
-      left: 26px;
+    .panel-head {
+      padding: 16px 17px 13px;
       display: flex;
-      flex-direction: column;
-      gap: 5px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .vehicle-label strong {
-      font-size: 12px;
+    .panel-head h2 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 800;
     }
 
-    .vehicle-label span,
-    .vehicle-caption {
+    .eyebrow {
+      margin-top: 4px;
       color: var(--muted);
       font-size: 11px;
-    }
-
-    .vehicle-number {
-      position: absolute;
-      top: 27px;
-      right: 27px;
-      color: #777781;
-      font-size: 11px;
-      letter-spacing: 1px;
     }
 
     .vehicle-stage {
-      width: 100%;
-      min-height: 320px;
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 38px 0 8px;
+      min-height: 430px;
+      padding: 14px 12px 18px;
+      background:
+        radial-gradient(ellipse at center, #222930 0%, #15191e 50%, #111418 100%);
+      overflow: hidden;
     }
 
-    .vehicle-image {
+    .vehicle-grid {
+      position: absolute;
+      inset: 0;
+      opacity: .16;
+      pointer-events: none;
+      background-image:
+        linear-gradient(#69737d 1px, transparent 1px),
+        linear-gradient(90deg, #69737d 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse at center, black, transparent 76%);
+    }
+
+    #vehicleMount {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 350px;
+      transform: rotate(0deg);
+      transition: transform .3s ease;
+    }
+
+    #vehicleMount svg {
       display: block;
-      width: min(72%, 250px);
+      width: 100%;
       height: auto;
-      max-height: 440px;
-      object-fit: contain;
-      filter: drop-shadow(0 14px 24px rgb(0 0 0 / 35%));
-      transition: transform 350ms ease, filter 250ms ease;
+      max-height: 68vh;
+      overflow: visible;
     }
 
-    .vehicle-image.is-rotated {
-      transform: rotate(90deg);
-      width: min(88%, 300px);
+    #vehicleMount [data-zone] { cursor: pointer; }
+
+    #vehicleMount [data-zone]:hover {
+      filter: brightness(1.12);
     }
 
-    .vehicle-caption {
-      margin: 10px 0 0;
-      text-align: center;
+    #vehicleMount [data-zone].selected {
+      filter: drop-shadow(0 0 3px rgba(255, 209, 102, .9));
     }
 
-    .controls {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+    .stage-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px;
+      border-top: 1px solid var(--border);
     }
 
-    .btn {
-      min-height: 54px;
-      padding: 13px 12px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--panel);
-      color: var(--text);
+    .stage-actions button { flex: 1; }
+
+    .section { padding: 16px; }
+
+    .section + .section {
+      border-top: 1px solid var(--border);
+    }
+
+    .section-title {
+      margin: 0 0 12px;
       font-size: 13px;
-      font-weight: 650;
+      font-weight: 800;
     }
 
-    .btn-primary {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #17110a;
-    }
-
-    .info-card {
-      padding: 16px;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: var(--panel);
-    }
-
-    .info-card strong {
+    .field-label {
+      display: block;
+      margin: 0 0 7px;
+      color: var(--muted);
       font-size: 12px;
     }
 
-    .info-card p {
-      margin: 6px 0 0;
+    select, input[type="text"] {
+      width: 100%;
+      min-height: 45px;
+      padding: 10px 12px;
+      color: var(--text);
+      background: #0e1115;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+    }
+
+    .zone-picker { margin-bottom: 16px; }
+
+    .zone-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .zone-button {
+      min-width: 0;
+      min-height: 43px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-align: left;
+      padding: 9px;
+      font-size: 11px;
+      line-height: 1.25;
+      background: #101419;
+    }
+
+    .zone-button.active {
+      border-color: var(--accent);
+      background: #292319;
+    }
+
+    .swatch {
+      width: 17px;
+      height: 17px;
+      flex: 0 0 17px;
+      border-radius: 5px;
+      border: 1px solid rgba(255,255,255,.4);
+      background: var(--swatch, #30363b);
+    }
+
+    .zone-button span:last-child {
+      overflow-wrap: anywhere;
+    }
+
+    .selected-zone {
+      padding: 12px;
+      margin-bottom: 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #101419;
+    }
+
+    .selected-name {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .selected-id {
+      margin-top: 4px;
       color: var(--muted);
+      font-size: 10px;
+      overflow-wrap: anywhere;
+    }
+
+    .color-row {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+    }
+
+    input[type="color"] {
+      appearance: none;
+      width: 54px;
+      height: 48px;
+      padding: 4px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: #0e1115;
+      cursor: pointer;
+    }
+
+    input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    input[type="color"]::-webkit-color-swatch {
+      border: 0;
+      border-radius: 6px;
+    }
+
+    .hex-input {
+      width: 100%;
+      min-width: 0;
+      height: 48px;
+      padding: 0 12px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: #0e1115;
+      color: var(--text);
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 13px;
+    }
+
+    .preset {
+      width: 29px;
+      height: 29px;
+      min-height: 29px;
+      padding: 0;
+      border-radius: 50%;
+      background: var(--preset);
+      border: 2px solid rgba(255,255,255,.17);
+    }
+
+    .preset.active {
+      outline: 2px solid white;
+      outline-offset: 2px;
+    }
+
+    .hint {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .action-stack {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .action-stack button { font-size: 12px; }
+
+    .message {
+      min-height: 20px;
+      padding-top: 10px;
+      color: #b9c6cf;
       font-size: 11px;
       line-height: 1.5;
     }
 
     .footer {
-      color: #777781;
+      padding: 18px 0 4px;
+      color: #69737d;
+      text-align: center;
       font-size: 10px;
     }
 
-    .hidden {
-      display: none !important;
-    }
-
-    .toast {
-      position: fixed;
-      z-index: 10;
-      left: 50%;
-      bottom: max(22px, env(safe-area-inset-bottom));
-      width: max-content;
-      max-width: calc(100% - 32px);
-      padding: 12px 16px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: #24242a;
-      color: var(--text);
-      font-size: 12px;
+    .loading {
+      padding: 30px 12px;
+      color: var(--muted);
       text-align: center;
-      transform: translate(-50%, 12px);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 180ms ease, transform 180ms ease;
+      font-size: 13px;
     }
 
-    .toast.visible {
-      opacity: 1;
-      visibility: visible;
-      transform: translate(-50%, 0);
+    @media (max-width: 740px) {
+      .app { width: min(100% - 20px, 520px); }
+      header { padding-top: 17px; }
+      .layout { grid-template-columns: minmax(0, 1fr); gap: 13px; }
+      .vehicle-stage { min-height: 380px; }
+      #vehicleMount { max-width: 300px; }
+      #vehicleMount svg { max-height: 52vh; }
+      .panel-head { padding: 14px; }
+      .section { padding: 14px; }
+      .zone-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 360px) {
-      .app {
-        padding-left: 14px;
-        padding-right: 14px;
-        gap: 18px;
-      }
+      .status { display: none; }
+      .vehicle-stage { min-height: 330px; }
+      #vehicleMount { max-width: 265px; }
+      .zone-button { font-size: 10px; }
+    }
 
-      .vehicle-card {
-        min-height: 340px;
-      }
-
-      .vehicle-stage {
-        min-height: 270px;
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
       }
     }
   </style>
 </head>
-
 <body>
   <main class="app">
-
-    <header class="topbar">
+    <header>
       <div class="brand">
-        <img class="brand-icon" src="./icon.png" alt="" width="44" height="44">
+        <div class="logo" aria-hidden="true">L</div>
         <div>
-          <p class="brand-name">Lototi</p>
-          <p class="brand-subtitle">Automotive interface</p>
+          <h1>LOTOTI <span style="color:var(--accent)">STUDIO</span></h1>
+          <div class="subtitle">Personnalisation automobile</div>
         </div>
       </div>
-
       <div class="status">
-        <span class="status-dot" id="statusDot"></span>
-        <span id="statusText">En ligne</span>
+        <span class="status-dot"></span>
+        <span id="appStatus">Initialisation…</span>
       </div>
     </header>
 
-    <section class="intro">
-      <p class="eyebrow">Design · Précision · Simplicité</p>
-      <h1>Votre voiture,<br>vue autrement.</h1>
-      <p class="intro-description">
-        Une représentation minimaliste en vue de dessus,
-        conçue pour une interface automobile moderne.
-      </p>
-    </section>
+    <div class="layout">
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Vue du véhicule</h2>
+            <div class="eyebrow">Sélectionne une zone directement sur le dessin</div>
+          </div>
+          <span style="color:var(--accent);font-size:11px;font-weight:800">SVG</span>
+        </div>
 
-    <section class="vehicle-card" aria-label="Illustration du véhicule">
-      <div class="vehicle-label">
-        <strong>VÉHICULE</strong>
-        <span>Vue de dessus</span>
-      </div>
+        <div class="vehicle-stage">
+          <div class="vehicle-grid"></div>
+          <div id="vehicleMount">
+            <div class="loading">Chargement du modèle vectoriel…</div>
+          </div>
+        </div>
 
-      <span class="vehicle-number">LT — 001</span>
+        <div class="stage-actions">
+          <button id="rotateBtn" type="button">↻ Tourner</button>
+          <button id="resetViewBtn" type="button">Réinitialiser la vue</button>
+        </div>
+      </section>
 
-      <div class="vehicle-stage">
-        <img
-          id="vehicleImage"
-          class="vehicle-image"
-          src="./voiture.svg"
-          alt="Voiture vue de dessus avec quatre sièges"
-          width="400"
-          height="650">
-      </div>
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Éditeur des zones</h2>
+            <div class="eyebrow">Chaque couleur est indépendante</div>
+          </div>
+        </div>
 
-      <p class="vehicle-caption" id="orientationLabel">
-        Orientation verticale
-      </p>
-    </section>
+        <div class="section">
+          <div class="zone-picker">
+            <label class="field-label" for="zoneSelect">Sélectionner une zone</label>
+            <select id="zoneSelect" disabled>
+              <option value="">Chargement des zones…</option>
+            </select>
+          </div>
 
-    <section class="controls">
-      <button class="btn" id="rotateButton" type="button">
-        ↻ Tourner de 90°
-      </button>
+          <div class="selected-zone">
+            <div class="selected-name" id="selectedName">Aucune zone sélectionnée</div>
+            <div class="selected-id" id="selectedId">Choisis une zone pour commencer</div>
+          </div>
 
-      <button class="btn btn-primary" id="seatColorButton" type="button">
-        Sièges orange
-      </button>
+          <h3 class="section-title">Couleur de la zone</h3>
+          <div class="color-row">
+            <input id="colorPicker" type="color" value="#ff8a24" aria-label="Choisir une couleur" disabled>
+            <input id="hexInput" class="hex-input" type="text" value="#FF8A24"
+              maxlength="7" spellcheck="false" aria-label="Code hexadécimal" disabled>
+          </div>
 
-      <button class="btn" id="resetButton" type="button">
-        Réinitialiser
-      </button>
+          <div class="presets" id="presets" aria-label="Couleurs prédéfinies">
+            <button class="preset" type="button" data-color="#ff8a24" style="--preset:#ff8a24" aria-label="Orange"></button>
+            <button class="preset" type="button" data-color="#e53935" style="--preset:#e53935" aria-label="Rouge"></button>
+            <button class="preset" type="button" data-color="#2196f3" style="--preset:#2196f3" aria-label="Bleu"></button>
+            <button class="preset" type="button" data-color="#27ae60" style="--preset:#27ae60" aria-label="Vert"></button>
+            <button class="preset" type="button" data-color="#f5f5f5" style="--preset:#f5f5f5" aria-label="Blanc"></button>
+            <button class="preset" type="button" data-color="#292929" style="--preset:#292929" aria-label="Noir"></button>
+            <button class="preset" type="button" data-color="#8e44ad" style="--preset:#8e44ad" aria-label="Violet"></button>
+            <button class="preset" type="button" data-color="#d4af37" style="--preset:#d4af37" aria-label="Or"></button>
+          </div>
 
-      <button class="btn hidden" id="installButton" type="button">
-        Installer Lototi
-      </button>
-    </section>
+          <p class="hint">
+            La couleur est appliquée à la surface de la zone sélectionnée.
+            Les autres zones conservent leurs propres couleurs.
+          </p>
+        </div>
 
-    <section class="info-card">
-      <strong>Illustration vectorielle</strong>
-      <p>
-        Le dessin est chargé depuis voiture.svg.
-        Le fichier original reste inchangé.
-      </p>
-    </section>
+        <div class="section">
+          <h3 class="section-title">Zones disponibles</h3>
+          <div class="zone-list" id="zoneList">
+            <div class="loading">Lecture du SVG…</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3 class="section-title">Projet</h3>
+          <div class="action-stack">
+            <button class="primary" id="saveBtn" type="button">Enregistrer</button>
+            <button id="exportBtn" type="button">Exporter SVG</button>
+            <button id="resetColorsBtn" class="ghost" type="button">Réinitialiser les couleurs</button>
+            <button id="installBtn" class="ghost" type="button" hidden>Installer l’application</button>
+          </div>
+          <div class="message" id="message" role="status" aria-live="polite"></div>
+        </div>
+      </section>
+    </div>
 
     <footer class="footer">
-      <span>LOTOTI · VERSION 1.0</span>
-      <span id="appStatus">Interface prête</span>
+      LOTOTI STUDIO · Personnalisation vectorielle · Données enregistrées sur cet appareil
     </footer>
-
   </main>
-
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
     (() => {
       "use strict";
 
-      const $ = id => document.getElementById(id);
+      const STORAGE_KEY = "lototi-studio-colors-v1";
 
-      const vehicleImage = $("vehicleImage");
-      const rotateButton = $("rotateButton");
-      const seatColorButton = $("seatColorButton");
-      const resetButton = $("resetButton");
-      const installButton = $("installButton");
-      const orientationLabel = $("orientationLabel");
-      const statusText = $("statusText");
-      const statusDot = $("statusDot");
-      const appStatus = $("appStatus");
-      const toast = $("toast");
+      const $ = (selector) => document.querySelector(selector);
 
-      let rotated = false;
-      let orangeFilterEnabled = false;
+      const mount = $("#vehicleMount");
+      const zoneSelect = $("#zoneSelect");
+      const zoneList = $("#zoneList");
+      const colorPicker = $("#colorPicker");
+      const hexInput = $("#hexInput");
+      const selectedName = $("#selectedName");
+      const selectedId = $("#selectedId");
+      const message = $("#message");
+      const appStatus = $("#appStatus");
+
+      const defaults = {
+        "body": "#aab2ba",
+        "wheels": "#15191c",
+        "windshield": "#263e4a",
+        "dashboard": "#343b41",
+        "steering": "#151a1e",
+        "seat-front-left": "#30363b",
+        "seat-front-right": "#30363b",
+        "console": "#252b30",
+        "side-windows": "#263e4a",
+        "door-left": "#7f8992",
+        "door-right": "#7f8992",
+        "seat-rear-left": "#30363b",
+        "seat-rear-center": "#30363b",
+        "seat-rear-right": "#30363b",
+        "rear-window": "#263e4a",
+        "trunk": "#aab2ba",
+        "lights": "#f6e8c8",
+        "mirrors": "#68737c"
+      };
+
+      let zones = [];
+      let selectedZone = "";
+      let savedColors = {};
+      let rotation = 0;
       let installPrompt = null;
-      let toastTimer;
 
-      /*
-       * FILTRE CSS ORANGE
-       *
-       * Important :
-       * Un filtre CSS appliqué à une image SVG externe agit sur
-       * toute l'image, pas uniquement sur les sièges.
-       *
-       * Ce filtre est donc une démonstration globale, désactivée
-       * par défaut. Il ne garantit pas des sièges orange seuls.
-       */
-      const orangeFilter =
-        "sepia(1) saturate(5) hue-rotate(345deg) brightness(1.05)";
-
-      function showToast(message) {
-        toast.textContent = message;
-        toast.classList.add("visible");
-
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => {
-          toast.classList.remove("visible");
-        }, 2600);
+      function say(text) {
+        message.textContent = text;
       }
 
-      function updateOrientation() {
-        vehicleImage.classList.toggle("is-rotated", rotated);
-
-        orientationLabel.textContent = rotated
-          ? "Orientation horizontale"
-          : "Orientation verticale";
+      function validHex(value) {
+        return /^#[0-9a-fA-F]{6}$/.test(value);
       }
 
-      function updateColorFilter() {
-        vehicleImage.style.filter = orangeFilterEnabled
-          ? orangeFilter + " drop-shadow(0 14px 24px rgb(0 0 0 / 35%))"
-          : "drop-shadow(0 14px 24px rgb(0 0 0 / 35%))";
+      function getColor(zoneId) {
+        return savedColors[zoneId] || defaults[zoneId] || "#30363b";
+      }
 
-        seatColorButton.textContent = orangeFilterEnabled
-          ? "Désactiver le filtre"
-          : "Sièges orange";
+      function getZoneElement(zoneId) {
+        return mount.querySelector('[data-zone="' + CSS.escape(zoneId) + '"]');
+      }
 
-        if (orangeFilterEnabled) {
-          showToast("Filtre orange global activé.");
-        } else {
-          showToast("Filtre désactivé.");
+      function setZoneColor(zoneId, color) {
+        if (!validHex(color)) return;
+
+        const zone = getZoneElement(zoneId);
+        if (!zone) return;
+
+        savedColors[zoneId] = color.toLowerCase();
+
+        // Les surfaces et vitres ont leur propre classe dans le SVG.
+        zone.querySelectorAll(".surface, .window").forEach((element) => {
+          element.style.fill = color;
+          element.style.setProperty("--zone-color", color);
+        });
+
+        // Éléments spécifiques à certaines zones.
+        if (zoneId === "steering") {
+          zone.querySelectorAll("circle").forEach((element) => {
+            if (element.hasAttribute("stroke-width") &&
+                element.getAttribute("stroke-width") === "7") {
+              element.style.stroke = color;
+            } else {
+              element.style.fill = color;
+            }
+          });
+        }
+
+        if (zoneId === "wheels") {
+          zone.querySelectorAll(".tire").forEach((element) => {
+            element.style.fill = color;
+          });
+          zone.querySelectorAll(".wheel-rim").forEach((element) => {
+            element.style.fill = color;
+          });
+        }
+
+        if (zoneId === "lights") {
+          zone.querySelectorAll(".lamp, .rear-lamp").forEach((element) => {
+            element.style.fill = color;
+          });
+        }
+
+        zone.style.setProperty("--zone-color", color);
+
+        updateSwatches();
+        updateSelectedControls();
+      }
+
+      function updateSwatches() {
+        zoneList.querySelectorAll("[data-zone-button]").forEach((button) => {
+          const id = button.dataset.zoneButton;
+          const swatch = button.querySelector(".swatch");
+          if (swatch) swatch.style.setProperty("--swatch", getColor(id));
+          button.classList.toggle("active", id === selectedZone);
+          button.setAttribute("aria-pressed", String(id === selectedZone));
+        });
+
+        mount.querySelectorAll("[data-zone]").forEach((element) => {
+          const id = element.dataset.zone;
+          element.classList.toggle("selected", id === selectedZone);
+          if (id in defaults) {
+            element.setAttribute("aria-pressed", String(id === selectedZone));
+          }
+        });
+
+        $("#presets").querySelectorAll(".preset").forEach((button) => {
+          button.classList.toggle(
+            "active",
+            button.dataset.color.toLowerCase() === getColor(selectedZone).toLowerCase()
+          );
+        });
+      }
+
+      function updateSelectedControls() {
+        const zone = zones.find((item) => item.id === selectedZone);
+        if (!zone) return;
+
+        selectedName.textContent = zone.label;
+        selectedId.textContent = "ID : " + zone.id;
+
+        const color = getColor(selectedZone);
+        colorPicker.value = color;
+        hexInput.value = color.toUpperCase();
+        colorPicker.disabled = false;
+        hexInput.disabled = false;
+      }
+
+      function selectZone(zoneId) {
+        const zone = zones.find((item) => item.id === zoneId);
+        if (!zone) return;
+
+        selectedZone = zoneId;
+        zoneSelect.value = zoneId;
+        updateSelectedControls();
+        updateSwatches();
+      }
+
+      function saveColors(showMessage = true) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(savedColors));
+          if (showMessage) say("Configuration enregistrée sur cet appareil.");
+        } catch (error) {
+          if (showMessage) say("Enregistrement impossible : stockage indisponible.");
         }
       }
 
-      rotateButton.addEventListener("click", () => {
-        rotated = !rotated;
-        updateOrientation();
-      });
+      function loadColors() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return {};
+          const parsed = JSON.parse(raw);
+          if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+            return {};
+          }
 
-      seatColorButton.addEventListener("click", () => {
-        orangeFilterEnabled = !orangeFilterEnabled;
-        updateColorFilter();
-      });
-
-      resetButton.addEventListener("click", () => {
-        rotated = false;
-        orangeFilterEnabled = false;
-        updateOrientation();
-        updateColorFilter();
-        showToast("Affichage réinitialisé.");
-      });
-
-      vehicleImage.addEventListener("error", () => {
-        appStatus.textContent = "SVG introuvable";
-        showToast("Vérifiez le fichier voiture.svg à la racine.");
-      });
-
-      vehicleImage.addEventListener("load", () => {
-        appStatus.textContent = "Interface prête";
-      });
-
-      function updateConnection() {
-        const online = navigator.onLine;
-        statusText.textContent = online ? "En ligne" : "Hors ligne";
-        statusDot.style.background = online ? "#60c995" : "#f1c75b";
+          const cleaned = {};
+          Object.entries(parsed).forEach(([id, color]) => {
+            if (id in defaults && validHex(color)) {
+              cleaned[id] = color.toLowerCase();
+            }
+          });
+          return cleaned;
+        } catch {
+          return {};
+        }
       }
 
-      window.addEventListener("online", updateConnection);
-      window.addEventListener("offline", updateConnection);
-      updateConnection();
+      function createZoneControls() {
+        zoneSelect.replaceChildren();
+        zoneList.replaceChildren();
 
-      window.addEventListener("beforeinstallprompt", event => {
-        event.preventDefault();
-        installPrompt = event;
-        installButton.classList.remove("hidden");
+        zones.forEach((zone) => {
+          const option = document.createElement("option");
+          option.value = zone.id;
+          option.textContent = zone.label;
+          zoneSelect.appendChild(option);
+
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "zone-button";
+          button.dataset.zoneButton = zone.id;
+
+          const swatch = document.createElement("span");
+          swatch.className = "swatch";
+          swatch.setAttribute("aria-hidden", "true");
+
+          const label = document.createElement("span");
+          label.textContent = zone.label;
+
+          button.append(swatch, label);
+          button.addEventListener("click", () => selectZone(zone.id));
+          zoneList.appendChild(button);
+        });
+
+        zoneSelect.disabled = false;
+      }
+
+      function applyAllColors() {
+        Object.keys(defaults).forEach((id) => {
+          const zone = getZoneElement(id);
+          if (zone) setZoneColor(id, getColor(id));
+        });
+      }
+
+      async function loadVehicle() {
+        try {
+          const response = await fetch("./voiture.svg", { cache: "no-cache" });
+          if (!response.ok) {
+            throw new Error("Le fichier voiture.svg est introuvable.");
+          }
+
+          const source = await response.text();
+          const parsed = new DOMParser().parseFromString(source, "image/svg+xml");
+
+          if (parsed.querySelector("parsererror") || parsed.documentElement.localName !== "svg") {
+            throw new Error("Le fichier SVG n'est pas valide.");
+          }
+
+          const svg = parsed.documentElement;
+          svg.removeAttribute("width");
+          svg.removeAttribute("height");
+          svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+
+          // Importer le SVG dans le document permet de modifier ses éléments.
+          const imported = document.importNode(svg, true);
+          mount.replaceChildren(imported);
+
+          zones = Array.from(imported.querySelectorAll("[data-zone]"))
+            .map((element) => ({
+              id: element.dataset.zone,
+              label: element.dataset.label || element.dataset.zone
+            }))
+            .filter((zone, index, array) =>
+              zone.id in defaults && array.findIndex((other) => other.id === zone.id) === index
+            );
+
+          if (!zones.length) {
+            throw new Error("Aucune zone interactive n'a été trouvée dans le SVG.");
+          }
+
+          createZoneControls();
+          savedColors = loadColors();
+          applyAllColors();
+
+          // Les surfaces initiales sont colorées avec les valeurs par défaut
+          // lorsque le projet n'a pas encore été personnalisé.
+          if (!selectedZone || !zones.some((zone) => zone.id === selectedZone)) {
+            selectedZone = zones.some((zone) => zone.id === "seat-front-left")
+              ? "seat-front-left"
+              : zones[0].id;
+          }
+
+          selectZone(selectedZone);
+
+          imported.querySelectorAll("[data-zone]").forEach((element) => {
+            element.addEventListener("click", (event) => {
+              event.stopPropagation();
+              selectZone(element.dataset.zone);
+            });
+
+            element.addEventListener("keydown", (event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                selectZone(element.dataset.zone);
+              }
+            });
+          });
+
+          appStatus.textContent = "Modèle chargé";
+          say("Modèle prêt. Sélectionne un siège ou une autre zone.");
+        } catch (error) {
+          appStatus.textContent = "Erreur de chargement";
+          mount.innerHTML = '<div class="loading"></div>';
+          mount.firstElementChild.textContent =
+            error.message + " Vérifie que voiture.svg est à côté de index.html.";
+          zoneList.innerHTML = "";
+          zoneSelect.disabled = true;
+          say("Impossible de charger le modèle.");
+        }
+      }
+
+      function exportSvg() {
+        const svg = mount.querySelector("svg");
+        if (!svg) {
+          say("Aucun modèle SVG à exporter.");
+          return;
+        }
+
+        const clone = svg.cloneNode(true);
+        clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+        clone.setAttribute("width", "400");
+        clone.setAttribute("height", "620");
+
+        const blob = new Blob(
+          ['<?xml version="1.0" encoding="UTF-8"?>\n', clone.outerHTML],
+          { type: "image/svg+xml;charset=utf-8" }
+        );
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "lototi-voiture-personnalisee.svg";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+        say("Export SVG lancé.");
+      }
+
+      colorPicker.addEventListener("input", () => {
+        if (!selectedZone) return;
+        const color = colorPicker.value.toLowerCase();
+        hexInput.value = color.toUpperCase();
+        setZoneColor(selectedZone, color);
+        saveColors(false);
       });
 
-      installButton.addEventListener("click", async () => {
+      hexInput.addEventListener("change", () => {
+        const color = hexInput.value.trim();
+        if (!validHex(color)) {
+          hexInput.value = getColor(selectedZone).toUpperCase();
+          say("Code couleur invalide. Exemple : #FF8A24.");
+          return;
+        }
+        setZoneColor(selectedZone, color);
+        saveColors(false);
+      });
+
+      zoneSelect.addEventListener("change", () => {
+        selectZone(zoneSelect.value);
+      });
+
+      $("#presets").addEventListener("click", (event) => {
+        const button = event.target.closest("[data-color]");
+        if (!button || !selectedZone) return;
+        setZoneColor(selectedZone, button.dataset.color);
+        saveColors(false);
+        say("Couleur appliquée à : " +
+          (zones.find((zone) => zone.id === selectedZone)?.label || selectedZone) + ".");
+      });
+
+      $("#saveBtn").addEventListener("click", () => saveColors(true));
+
+      $("#resetColorsBtn").addEventListener("click", () => {
+        savedColors = {};
+        applyAllColors();
+        updateSelectedControls();
+        saveColors(false);
+        say("Toutes les couleurs ont été réinitialisées.");
+      });
+
+      $("#exportBtn").addEventListener("click", exportSvg);
+
+      $("#rotateBtn").addEventListener("click", () => {
+        rotation = (rotation + 90) % 360;
+        mount.style.transform = "rotate(" + rotation + "deg)";
+      });
+
+      $("#resetViewBtn").addEventListener("click", () => {
+        rotation = 0;
+        mount.style.transform = "rotate(0deg)";
+      });
+
+      window.addEventListener("beforeinstallprompt", (event) => {
+        event.preventDefault();
+        installPrompt = event;
+        $("#installBtn").hidden = false;
+      });
+
+      $("#installBtn").addEventListener("click", async () => {
         if (!installPrompt) {
-          showToast("Utilisez le menu du navigateur pour installer Lototi.");
+          say("Pour installer Lototi, ouvre le menu du navigateur puis « Installer l'application ».");
           return;
         }
 
         installPrompt.prompt();
         await installPrompt.userChoice;
         installPrompt = null;
-        installButton.classList.add("hidden");
+        $("#installBtn").hidden = true;
       });
 
-      window.addEventListener("appinstalled", () => {
-        installButton.classList.add("hidden");
-        showToast("Lototi a été installé.");
-      });
-
-      if ("serviceWorker" in navigator && window.isSecureContext) {
-        window.addEventListener("load", async () => {
-          try {
-            await navigator.serviceWorker.register("./sw.js");
-            appStatus.textContent = "PWA prête";
-          } catch (error) {
-            console.error("Service worker :", error);
-            appStatus.textContent = "Mode web";
-          }
+      if ("serviceWorker" in navigator && location.protocol !== "file:") {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js").catch(() => {
+            // L'éditeur reste utilisable même si le service worker échoue.
+          });
         });
       }
 
-      updateOrientation();
+      loadVehicle();
     })();
   </script>
 </body>
